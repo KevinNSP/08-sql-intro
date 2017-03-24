@@ -162,7 +162,7 @@ function loadArticles() {
   })
 }
 
-// NOTE: This is the function that is called to create the database if it doesn't already exist. This is a CRUD "Create" operation.
+// NOTE: This is the function that is called to create the database if it doesn't already exist. This is a CRUD "Create" operation. This interaction only occurs between the server and the database (#'s 3 and 4).
 function loadDB() {
   client.query(`
     CREATE TABLE IF NOT EXISTS articles (
