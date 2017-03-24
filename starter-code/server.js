@@ -13,7 +13,7 @@ const app = express();
 // TODO: Complete the connection string for the url that will connect to your local postgres database
 // Windows and Linux users; You should have retained the user/pw from the pre-work for this course.
 // Your url may require that it's composed of additional information including user and password
-const conString = 'postgres://kevin:test@localhost:5432/kilovolt';
+const conString = 'postgres://cameron:1234@localhost:5432/kilovolt';
 // const conString = 'postgres://localhost:5432';
 
 // REVIEW: Pass the conString to pg, which creates a new client object
@@ -79,7 +79,7 @@ app.post('/articles', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE: The user sends a request to add a single article to the directory (#2), then the server turns this request into a query, which gets sent to the model (#3). The model receives this query, if the article was added successfully, the database (model) sends a response (#4) back the the server, which is then sent back to the user as a console log saying, "Update complete" (#5). This is a CRUD "Update" operation.
 app.put('/articles/:id', function(request, response) {
   client.query(
     `UPDATE articles
@@ -105,7 +105,7 @@ app.put('/articles/:id', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE: The user sends a request to the server to delete a single instance of an article (#2). The server then processes this request into a query to send to the database (#3). The database receives the query from the server, deletes the article, then sends a response to the server, dependent on the outcome (#4). The server then sends this response back to the user saying, "Delete complete" (#5). This is a CRUD "Delete" operation.
 app.delete('/articles/:id', function(request, response) {
   client.query(
     `DELETE FROM articles WHERE article_id=$1;`,
@@ -119,7 +119,7 @@ app.delete('/articles/:id', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE: The user makes a request to the server through the /articles route (#2) to delete all articles from the database. The server receives this request and turns it into a query, which gets sent to the database (#3). The database receives this query, deletes all articles, then sends a response back to the server (#4). The server receives this response and sends it back to the user (#5). This is a CRUD "Delete" operation.
 app.delete('/articles', function(request, response) {
   client.query(
     'DELETE FROM articles;'
@@ -132,7 +132,7 @@ app.delete('/articles', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE: This function is defined below, but is invoked right here. loadDB() is a function which will create a new database if one doesn't already exist. It then calls loadArticles().
 loadDB();
 
 app.listen(PORT, function() {
@@ -142,7 +142,7 @@ app.listen(PORT, function() {
 
 //////// ** DATABASE LOADER ** ////////
 ////////////////////////////////////////
-// NOTE:
+// NOTE: This function populates the table with the articles by parsing them from blogArticles.json. This is a CRUD "Update" operation.
 function loadArticles() {
   client.query('SELECT COUNT(*) FROM articles')
   .then(result => {
@@ -162,7 +162,7 @@ function loadArticles() {
   })
 }
 
-// NOTE:
+// NOTE: This is the function that is called to create the database if it doesn't already exist. This is a CRUD "Create" operation.
 function loadDB() {
   client.query(`
     CREATE TABLE IF NOT EXISTS articles (
