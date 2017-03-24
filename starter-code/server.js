@@ -13,8 +13,8 @@ const app = express();
 // TODO: Complete the connection string for the url that will connect to your local postgres database
 // Windows and Linux users; You should have retained the user/pw from the pre-work for this course.
 // Your url may require that it's composed of additional information including user and password
-// const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
-const conString = 'postgres://localhost:5432';
+const conString = 'postgres://kevin:test@localhost:5432/kilovolt';
+// const conString = 'postgres://localhost:5432';
 
 // REVIEW: Pass the conString to pg, which creates a new client object
 const client = new pg.Client(conString);
@@ -31,12 +31,12 @@ app.use(express.static('./public'));
 
 // REVIEW: Routes for requesting HTML resources
 
-// NOTE:
+// NOTE: The user sends an AJAX request to the root directory to retreive the the index.html file. The server sends back a response containing index.html.  The operation used is 1, 2, 5.
 app.get('/', function(request, response) {
   response.sendFile('index.html', {root: '.'});
 });
 
-// NOTE:
+// NOTE: The user sends an AJAX request to the root directory to retreive the the new.html file. The server sends back a response containing new.html.  The operation used is 1, 2, 5.
 app.get('/new', function(request, response) {
   response.sendFile('new.html', {root: '.'});
 });
@@ -55,7 +55,7 @@ app.get('/articles', function(request, response) {
   })
 });
 
-// NOTE:
+// NOTE: After creating a new article the user sends an AJAX request to the server from Article.Prototype.insertRecord().  The server forms that request into a SQL query to the database that sends the data to the server. This is a CRUD update that uses 2 and 3.
 app.post('/articles', function(request, response) {
   client.query(
     `INSERT INTO
