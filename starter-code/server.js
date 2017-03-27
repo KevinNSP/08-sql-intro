@@ -31,12 +31,12 @@ app.use(express.static('./public'));
 
 // REVIEW: Routes for requesting HTML resources
 
-// NOTE: The user sends an AJAX request to the root directory to retreive the the index.html file. The server sends back a response containing index.html.  The operation used is 1, 2, 5.
+// NOTE: The user sends an AJAX request to the root directory to retreive the the index.html file. The server sends back a response containing index.html. This is a CRUD 'Read' Operation which uses numbers 2 and 5.
 app.get('/', function(request, response) {
   response.sendFile('index.html', {root: '.'});
 });
 
-// NOTE: The user sends an AJAX request to the root directory to retreive the the new.html file. The server sends back a response containing new.html.  The operation used is 1, 2, 5.
+// NOTE: The user sends an AJAX request to the root directory to retreive the the new.html file. The server sends back a response containing new.html. This is a CRUD 'Read' Operation which uses numbers 2 and 5.
 app.get('/new', function(request, response) {
   response.sendFile('new.html', {root: '.'});
 });
@@ -55,7 +55,7 @@ app.get('/articles', function(request, response) {
   })
 });
 
-// NOTE: After creating a new article the user sends an AJAX request to the server from Article.Prototype.insertRecord().  The server forms that request into a SQL query to the database that sends the data to the server. This is a CRUD update that uses 2 and 3.
+// NOTE: After creating a new article the user sends an AJAX request to the server from Article.Prototype.insertRecord().  The server forms that request into a SQL query to the database that sends the data to the server. This is a CRUD Update that uses 2, 3 and 5. A status (200, 404, 500, etc) is also sent with the response.
 app.post('/articles', function(request, response) {
   client.query(
     `INSERT INTO
@@ -79,7 +79,7 @@ app.post('/articles', function(request, response) {
   });
 });
 
-// NOTE: The user sends a request to add a single article to the directory (#2), then the server turns this request into a query, which gets sent to the model (#3). The model receives this query, if the article was added successfully, the database (model) sends a response (#4) back the the server, which is then sent back to the user as a console log saying, "Update complete" (#5). This is a CRUD "Update" operation.
+// NOTE: The user sends a request to UPDATE a single article to the directory (#2), then the server turns this request into a query, which gets sent to the model (#3). The model receives this query, if the article was added successfully, the database (model) sends a response (#4) back the the server, which is then sent back to the user as a console log saying, "Update complete" (#5). This is a CRUD "Update" operation. The individual instance of the article is recognized by matching a primary key, which already exists in the database.
 app.put('/articles/:id', function(request, response) {
   client.query(
     `UPDATE articles
@@ -142,7 +142,7 @@ app.listen(PORT, function() {
 
 //////// ** DATABASE LOADER ** ////////
 ////////////////////////////////////////
-// NOTE: This function populates the table with the articles by parsing them from blogArticles.json. This is a CRUD "Update" operation.
+// NOTE: This function loads the articles from the database or, if there are no articles, it creates them. This is a CRUD "Read" operation.
 function loadArticles() {
   client.query('SELECT COUNT(*) FROM articles')
   .then(result => {
